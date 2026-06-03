@@ -29,7 +29,7 @@ class Vector2
 	}
 
 	/**
-	 * Add the other `Vector2` coordinates to this vector.
+	 * Add the other `Vector2` coordinates to the current vector.
 	 * 
 	 * @param {Vector2} other - The other `Vector2` to add to this `Vector2`.
 	 */
@@ -40,10 +40,11 @@ class Vector2
 	}
 
 	/**
-	 * Sum the current vector coordinates to the other vector coordinates and return it as a new instance.
+	 * Sum the current vector coordinates to the other vector coordinates and return it 
+	 * as a new instance.
 	 * 
-	 * @param {Vector2} v1 - This `Vector2` instance. 
-	 * @param {Vector2} v2 - The other `Vector2` instance.
+	 * @param {Vector2} v1 - The first vector term. 
+	 * @param {Vector2} v2 - The second vector term to add to the first.
 	 * @returns {Vector2} The summed vector.
 	 */
 	static add(v1, v2)
@@ -52,7 +53,7 @@ class Vector2
 	}
 
 	/**
-	 * Subtract the other `Vector2` coordinates from this vector.
+	 * Subtract the other `Vector2` coordinates from the current vector.
 	 * 
 	 * @param {Vector2} other - The other `Vector2` to subtract from this `Vector2`. 
 	 */
@@ -63,10 +64,11 @@ class Vector2
 	}
 
 	/**
-	 * Subtract the current vector coordinates and the other vector coordinates and return it as a new instance.
+	 * Subtract the current vector coordinates and the other vector coordinates and 
+	 * return it as a new instance.
 	 * 
-	 * @param {Vector2} v1 - This `Vector2` instance. 
-	 * @param {Vector2} v2 - The other `Vector2` instance.
+	 * @param {Vector2} v1 - The first vector term. 
+	 * @param {Vector2} v2 - The second vector term to subtract from the first.
 	 * @returns {Vector2} The subtracted vector.
 	 */
 	static subtract(v1, v2)
@@ -86,9 +88,10 @@ class Vector2
 	}
 
 	/**
-	 * Scale the current `Vector2` by the provided amount and return it as a new instance.
+	 * Scale the current `Vector2` by the provided amount and return it as a new 
+	 * instance.
 	 * 
-	 * @param {Vector2} vector - The vector to scalse.
+	 * @param {Vector2} vector - The vector to scale.
 	 * @param {number} scalar - The scalar amount to apply to the provided vector.
 	 * @returns {Vector2} The scaled vector.
 	 */
@@ -98,7 +101,7 @@ class Vector2
 	}
 
 	/**
-	 * Return the true magnitude of this current vector.
+	 * Return the true magnitude of the current vector.
 	 * 
 	 * @param {Vector2} other - The other `Vector2` instance. 
 	 * @returns {number} The true magnitude of the vector.
@@ -109,7 +112,7 @@ class Vector2
 	}
 	
 	/**
-	 * Return the squared magnitude of this current vector.
+	 * Return the squared magnitude of the current vector.
 	 * 
 	 * @returns {number} The squared magnitude of the vector. 
 	 */
@@ -163,19 +166,81 @@ class Vector2
 		return Math.pow(diff.x, 2) + Math.pow(diff.y, 2);
 	}
 
-	// ==========================
-	// TODO: Normalize and Rotate
-	// ==========================
-
+	/**
+	 * Normalize the current vector by dividing its coordinates by its own magnitude.
+	 * If the magnitude is `0`, do nothing.
+	 */
 	normalize()
 	{
-		// Divide the vector by its own magnitude
+		const magnitude = this.magnitude;
+
+		if (magnitude > 0) 
+		{
+			this.x /= magnitude;
+			this.y /= magnitude;
+		}
 	}
 
-	rotate()
+	/**
+	 * Normalize the current vector by dividing its coordinates by its own magnitude
+	 * and return it as a new instance. If the magnitude is `0` then return a vector
+	 * with coordinates at `(0, 0)`.
+	 * 
+	 * @param {Vector2} vector - The current vector to normalize.
+	 * @returns {Vector2} The normalization of the current vector. 
+	 */
+	static normalize(vector)
 	{
-		// x1 = xcos(theta) - ysin(theta)
-		// y1 = xsin(theta) + ycos(theta)
+		const magnitude = vector.magnitude;
+
+		if (magnitude > 0)
+		{
+			return new Vector2(vector.x / magnitude, vector.y / magnitude);
+		} 
+		return new Vector2(0, 0);
+	}
+
+	/**
+	 * Rotate the current vector by the given degrees.
+	 * 
+	 * @param {number} degrees - The degree of the angle. 
+	 */
+	rotate(degrees)
+	{
+		const radians = degreesToRadians(degrees);
+
+		const x1 = (this.x * Math.cos(radians)) - (this.y * Math.sin(radians));
+		const y1 = (this.x * Math.sin(radians)) + (this.y * Math.cos(radians));
+
+		this.x = x1;
+		this.y = y1;
+	}
+
+	/**
+	 * Rotate the current vector by the given degrees and return it as a new instance.
+	 * 
+	 * @param {Vector2} vector - The vector to rotate. 
+	 * @param {number} degrees - The degree of the angle.
+	 * @returns {Vector2} The rotated vector.
+	 */
+	static rotate(vector, degrees)
+	{
+		const radians = degreesToRadians(degrees);
+
+		return new Vector2(
+			(vector.x * Math.cos(radians)) - (vector.y * Math.sin(radians)), 
+			(vector.x * Math.sin(radians)) + (vector.y * Math.cos(radians)),
+		);
+	}
+
+	/**
+	 * @param {Vector2} other - The other vector to check against.
+	 * @returns {boolean} `true` if the current vector equals the other vector, 
+	 * 	`false` otherwise. 
+	 */
+	equals(other)
+	{
+		return this.x === other.x && this.y === other.y;
 	}
 
 	/**
