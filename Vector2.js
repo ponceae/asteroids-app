@@ -251,3 +251,5 @@ class Vector2
 		return '(' + String(this.x) + ', ' + String(this.y) + ')';
 	}
 }
+
+module.exports = Vector2;
