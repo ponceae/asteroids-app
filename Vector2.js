@@ -108,7 +108,7 @@ class Vector2
 	 */
 	magnitude()
 	{
-		return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
+		return Math.sqrt((this.x * this.x) + (this.y * this.y))
 	}
 	
 	/**
@@ -118,7 +118,7 @@ class Vector2
 	 */
 	magnitudeSquared()
 	{
-		return Math.pow(this.x, 2) + Math.pow(this.y, 2);
+		return (this.x * this.x) + (this.y * this.y);
 	}
 
 	/**
@@ -163,7 +163,7 @@ class Vector2
 	distanceSquared(other)
 	{
 		const diff = Vector2.subtract(this, other);
-		return Math.pow(diff.x, 2) + Math.pow(diff.y, 2);
+		return (diff.x * diff.x) + (diff.y * diff.y);
 	}
 
 	/**
