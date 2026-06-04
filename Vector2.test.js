@@ -289,6 +289,34 @@ describe('Vector2 Core Functionality', () => {
 
     describe('distance()', () => {
 
+      test('distance between two positive vectors', () => {
+        const vector = new Vector2(5, 10);
+        d = vector.distance(new Vector2(20, 35));
+
+        expect(d).toBeCloseTo(29.155);
+      });
+
+      test('distance between two negative vectors', () => {
+        const vector = new Vector2(-5, -10);
+        d = vector.distance(new Vector2(-20, -35));
+
+        expect(d).toBeCloseTo(29.155);
+      });
+
+      test('distance between positive & negative coords', () => {
+        const vector = new Vector2(5, -10);
+        d = vector.distance(new Vector2(-20, 35));
+
+        expect(d).toBeCloseTo(51.478);
+      });
+
+      test('distance between positive & negative float coords', () => {
+        const vector = new Vector2(5.23, -10.657);
+        d = vector.distance(new Vector2(-20.023, 35.104));
+
+        expect(d).toBeCloseTo(52.266);
+      });
+
     });
 
     // ===========================================
@@ -297,6 +325,34 @@ describe('Vector2 Core Functionality', () => {
 
     describe('distanceSquared()', () => {
 
+      test('distance squared between two positive vectors', () => {
+        const vector = new Vector2(5, 10);
+        d = vector.distanceSquared(new Vector2(20, 35));
+
+        expect(d).toBeCloseTo(850);
+      });
+
+      test('distance squared between two negative vectors', () => {
+        const vector = new Vector2(-5, -10);
+        d = vector.distanceSquared(new Vector2(-20, -35));
+
+        expect(d).toBeCloseTo(850);
+      });
+
+      test('distance squared between positive & negative coords', () => {
+        const vector = new Vector2(5, -10);
+        d = vector.distanceSquared(new Vector2(-20, 35));
+
+        expect(d).toBeCloseTo(2650);
+      });
+
+      test('distance squared between positive & negative float coords', () => {
+        const vector = new Vector2(5.23, -10.657);
+        d = vector.distanceSquared(new Vector2(-20.023, 35.104));
+
+        expect(d).toBeCloseTo(2731.783);
+      });
+
     });
 
     // ===========================================
@@ -304,6 +360,46 @@ describe('Vector2 Core Functionality', () => {
     // ===========================================
 
     describe('normalize()', () => {
+      
+      test('normalize a positive vector', () => {
+        const vector = new Vector2(6, 17);
+        vector.normalize();
+
+        expect(vector.x).toBeCloseTo(0.333);
+        expect(vector.y).toBeCloseTo(0.943);
+      });
+
+      test('normalize a negative vector', () => {
+        const vector = new Vector2(-6, -17);
+        vector.normalize();
+
+        expect(vector.x).toBeCloseTo(-0.333);
+        expect(vector.y).toBeCloseTo(-0.943);
+      });
+
+      test('normalize a vector with positive & negative coords', () => {
+        const vector = new Vector2(6, -17);
+        vector.normalize()
+
+        expect(vector.x).toBeCloseTo(0.333);
+        expect(vector.y).toBeCloseTo(-0.943);
+      });
+
+      test('normalize a vector with positive & negative float coords', () => {
+        const vector = new Vector2(6.23, -17.657);
+        vector.normalize();
+
+        expect(vector.x).toBeCloseTo(0.333);
+        expect(vector.y).toBeCloseTo(-0.943);
+      });
+
+      test('normalize a vector with zero magnitude', () => {
+        const vector = new Vector2(0, 0);
+        vector.normalize()
+
+        expect(vector.x).toBe(0);
+        expect(vector.y).toBe(0);
+      });
 
     });
 
@@ -313,6 +409,31 @@ describe('Vector2 Core Functionality', () => {
 
     describe('rotate()', () => {
       
+      /*
+        To test:
+
+        (2,0) rotated 30 degrees
+        x = 1.732
+        y = 1
+
+        (0,3) rotated 45 degrees
+        x = -2.121
+        y = 2.121
+
+        (4,-2) rotated 60 degrees
+        x = 3.732
+        y = 4.464
+
+        (-3,5) rotated 120 degrees
+        x = -6.830
+        y = -0.232
+
+        (1.5,-2.5) rotated 210 degrees
+        x = 2.598
+        y = -1.982
+
+      */
+
     });
 
     // ===========================================
@@ -468,6 +589,46 @@ describe('Vector2 Core Functionality', () => {
     // ===========================================
 
     describe('Vector2.normalize()', () => {
+
+      test('create normalized vector from positive one', () => {
+        const vectorA = new Vector2(6, 17);
+        const vectorB = Vector2.normalize(vectorA);
+
+        expect(vectorB.x).toBeCloseTo(0.333);
+        expect(vectorB.y).toBeCloseTo(0.943);
+      });
+
+      test('create normalized vector from negative one', () => {
+        const vectorA = new Vector2(-6, -17);
+        const vectorB = Vector2.normalize(vectorA);
+
+        expect(vectorB.x).toBeCloseTo(-0.333);
+        expect(vectorB.y).toBeCloseTo(-0.943);
+      });
+
+      test('create normalized vector from positive & negative coords', () => {
+        const vectorA = new Vector2(6, -17);
+        const vectorB = Vector2.normalize(vectorA);
+
+        expect(vectorB.x).toBeCloseTo(0.333);
+        expect(vectorB.y).toBeCloseTo(-0.943);
+      });
+
+      test('create normalized vector from positive & negative float coords', () => {
+        const vectorA = new Vector2(6.23, -17.657);
+        const vectorB = Vector2.normalize(vectorA);
+
+        expect(vectorB.x).toBeCloseTo(0.333);
+        expect(vectorB.y).toBeCloseTo(-0.943);
+      });
+
+      test('create normalized vector from zero magnitude', () => {
+        const vectorA = new Vector2(0, 0);
+        const vectorB = Vector2.normalize(vectorA);
+
+        expect(vectorB.x).toBe(0);
+        expect(vectorB.y).toBe(0);
+      });
 
     });
 

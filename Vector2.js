@@ -162,8 +162,7 @@ class Vector2
 	 */
 	distanceSquared(other)
 	{
-		const diff = Vector2.subtract(this, other);
-		return (diff.x * diff.x) + (diff.y * diff.y);
+		return Vector2.subtract(this, other).magnitudeSquared()
 	}
 
 	/**
@@ -172,7 +171,7 @@ class Vector2
 	 */
 	normalize()
 	{
-		const magnitude = this.magnitude;
+		const magnitude = this.magnitude();
 
 		if (magnitude > 0) 
 		{
@@ -191,7 +190,7 @@ class Vector2
 	 */
 	static normalize(vector)
 	{
-		const magnitude = vector.magnitude;
+		const magnitude = vector.magnitude();
 
 		if (magnitude > 0)
 		{
