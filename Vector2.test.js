@@ -1,4 +1,6 @@
-const Vector2 = require('./Vector2');
+import { describe, test, expect } from 'vitest';
+
+import Vector2 from './Vector2.js';
 
 describe('Vector2 Core Functionality', () => {
 
@@ -147,28 +149,28 @@ describe('Vector2 Core Functionality', () => {
 
       test('magnitude of a positive vector', () => {
         const vector = new Vector2(5, 10);
-        magnitude = vector.magnitude();
+        const magnitude = vector.magnitude();
 
         expect(magnitude).toBeCloseTo(11.18);
       });
 
       test('magnitude of a negative vector', () => {
         const vector = new Vector2(-5, -10);
-        magnitude = vector.magnitude();
+        const magnitude = vector.magnitude();
 
         expect(magnitude).toBeCloseTo(11.18);
       });
 
       test('magnitude of positive & negative coords', () => {
         const vector = new Vector2(-5, 10);
-        magnitude = vector.magnitude();
+        const magnitude = vector.magnitude();
 
         expect(magnitude).toBeCloseTo(11.18);
       });
 
       test('magnitude of positive & negative float coords', () => {
         const vector = new Vector2(-52.136, 12.36);
-        magnitude = vector.magnitude();
+        const magnitude = vector.magnitude();
 
         expect(magnitude).toBeCloseTo(53.58);
       });
@@ -183,28 +185,28 @@ describe('Vector2 Core Functionality', () => {
 
       test('magnitude squared of a positive vector', () => {
         const vector = new Vector2(5, 10);
-        magnitude = vector.magnitudeSquared();
+        const magnitude = vector.magnitudeSquared();
 
         expect(magnitude).toBe(125);
       });
 
       test('magnitude squared of a negative vector', () => {
         const vector = new Vector2(-5, -10);
-        magnitude = vector.magnitudeSquared();
+        const magnitude = vector.magnitudeSquared();
 
         expect(magnitude).toBe(125);
       });
 
       test('magnitude squared of positive & negative coords', () => {
         const vector = new Vector2(-5, 10);
-        magnitude = vector.magnitudeSquared();
+        const magnitude = vector.magnitudeSquared();
 
         expect(magnitude).toBe(125);
       });
 
       test('magnitude squared of positive & negative float coords', () => {
         const vector = new Vector2(-52.136, 12.36);
-        magnitude = vector.magnitudeSquared();
+        const magnitude = vector.magnitudeSquared();
 
         expect(magnitude).toBeCloseTo(2870.932);
       });
@@ -219,28 +221,28 @@ describe('Vector2 Core Functionality', () => {
 
       test('dot product with positive vectors', () => {
         const vector = new Vector2(5, 10);
-        dotProduct = vector.dotProduct(new Vector2(10, 20));
+        const dotProduct = vector.dotProduct(new Vector2(10, 20));
 
         expect(dotProduct).toBe(250);
       });
 
       test('dot product with negative vectors', () => {
         const vector = new Vector2(-5, -10);
-        dotProduct = vector.dotProduct(new Vector2(-10, -20));
+        const dotProduct = vector.dotProduct(new Vector2(-10, -20));
 
         expect(dotProduct).toBe(250);
       });
 
       test('dot product with positive & negative coords', () => {
         const vector = new Vector2(-5, 10);
-        dotProduct = vector.dotProduct(new Vector2(10, -20));
+        const dotProduct = vector.dotProduct(new Vector2(10, -20));
 
         expect(dotProduct).toBe(-250);
       });
 
       test('dot product with positive & negative float coords', () => {
         const vector = new Vector2(-5.125, 10.874);
-        dotProduct = vector.dotProduct(new Vector2(10.236, -20.001));
+        const dotProduct = vector.dotProduct(new Vector2(10.236, -20.001));
 
         expect(dotProduct).toBeCloseTo(-269.95);
       });
@@ -255,28 +257,28 @@ describe('Vector2 Core Functionality', () => {
 
       test('cross product with positive vectors', () => {
         const vector = new Vector2(7, 18);
-        crossProduct = vector.crossProduct(new Vector2(14, 2));
+        const crossProduct = vector.crossProduct(new Vector2(14, 2));
 
         expect(crossProduct).toBe(-238);
       });
 
       test('cross product with negative vectors', () => {
         const vector = new Vector2(-7, -18);
-        crossProduct = vector.crossProduct(new Vector2(-14, -2));
+        const crossProduct = vector.crossProduct(new Vector2(-14, -2));
 
         expect(crossProduct).toBe(-238);
       });
 
       test('cross product with positive & negative coords', () => {
         const vector = new Vector2(-7, 18);
-        crossProduct = vector.crossProduct(new Vector2(14, -2));
+        const crossProduct = vector.crossProduct(new Vector2(14, -2));
 
         expect(crossProduct).toBe(-238);
       });
 
       test('cross product with positive & negative float coords', () => {
         const vector = new Vector2(-5.125, 10.874);
-        crossProduct = vector.crossProduct(new Vector2(10.236, -20.001));
+        const crossProduct = vector.crossProduct(new Vector2(10.236, -20.001));
 
         expect(crossProduct).toBeCloseTo(-8.801);
       });
@@ -291,28 +293,28 @@ describe('Vector2 Core Functionality', () => {
 
       test('distance between two positive vectors', () => {
         const vector = new Vector2(5, 10);
-        d = vector.distance(new Vector2(20, 35));
+        const d = vector.distance(new Vector2(20, 35));
 
         expect(d).toBeCloseTo(29.155);
       });
 
       test('distance between two negative vectors', () => {
         const vector = new Vector2(-5, -10);
-        d = vector.distance(new Vector2(-20, -35));
+        const d = vector.distance(new Vector2(-20, -35));
 
         expect(d).toBeCloseTo(29.155);
       });
 
       test('distance between positive & negative coords', () => {
         const vector = new Vector2(5, -10);
-        d = vector.distance(new Vector2(-20, 35));
+        const d = vector.distance(new Vector2(-20, 35));
 
         expect(d).toBeCloseTo(51.478);
       });
 
       test('distance between positive & negative float coords', () => {
         const vector = new Vector2(5.23, -10.657);
-        d = vector.distance(new Vector2(-20.023, 35.104));
+        const d = vector.distance(new Vector2(-20.023, 35.104));
 
         expect(d).toBeCloseTo(52.266);
       });
@@ -327,28 +329,28 @@ describe('Vector2 Core Functionality', () => {
 
       test('distance squared between two positive vectors', () => {
         const vector = new Vector2(5, 10);
-        d = vector.distanceSquared(new Vector2(20, 35));
+        const d = vector.distanceSquared(new Vector2(20, 35));
 
         expect(d).toBeCloseTo(850);
       });
 
       test('distance squared between two negative vectors', () => {
         const vector = new Vector2(-5, -10);
-        d = vector.distanceSquared(new Vector2(-20, -35));
+        const d = vector.distanceSquared(new Vector2(-20, -35));
 
         expect(d).toBeCloseTo(850);
       });
 
       test('distance squared between positive & negative coords', () => {
         const vector = new Vector2(5, -10);
-        d = vector.distanceSquared(new Vector2(-20, 35));
+        const d = vector.distanceSquared(new Vector2(-20, 35));
 
         expect(d).toBeCloseTo(2650);
       });
 
       test('distance squared between positive & negative float coords', () => {
         const vector = new Vector2(5.23, -10.657);
-        d = vector.distanceSquared(new Vector2(-20.023, 35.104));
+        const d = vector.distanceSquared(new Vector2(-20.023, 35.104));
 
         expect(d).toBeCloseTo(2731.783);
       });
@@ -409,30 +411,61 @@ describe('Vector2 Core Functionality', () => {
 
     describe('rotate()', () => {
       
-      /*
-        To test:
+      test('rotate a positive vector by 30 degrees', () => {
+        const vector = new Vector2(2, 0);
+        vector.rotate(30)
 
-        (2,0) rotated 30 degrees
-        x = 1.732
-        y = 1
+        expect(vector.x).toBeCloseTo(1.732);
+        expect(vector.y).toBeCloseTo(1);
+      });
 
-        (0,3) rotated 45 degrees
-        x = -2.121
-        y = 2.121
+      test('rotate a positive vector by 45 degrees', () => {
+        const vector = new Vector2(0, 3);
+        vector.rotate(45);
 
-        (4,-2) rotated 60 degrees
-        x = 3.732
-        y = 4.464
+        expect(vector.x).toBeCloseTo(-2.121);
+        expect(vector.y).toBeCloseTo(2.121);
+      });
 
-        (-3,5) rotated 120 degrees
-        x = -6.830
-        y = -0.232
+      test('rotate positive & negative coords by 60 degrees', () => {
+        const vector = new Vector2(4, -2);
+        vector.rotate(60);
 
-        (1.5,-2.5) rotated 210 degrees
-        x = 2.598
-        y = -1.982
+        expect(vector.x).toBeCloseTo(3.732);
+        expect(vector.y).toBeCloseTo(2.464);
+      });
 
-      */
+      test('rotate negative & positive coords by 120 degrees', () => {
+        const vector = new Vector2(-3, 5);
+        vector.rotate(120);
+
+        expect(vector.x).toBeCloseTo(-2.830);
+        expect(vector.y).toBeCloseTo(-5.098);
+      });
+
+      test('rotate positive & negative float coords by 210 degrees', () => {
+        const vector = new Vector2(1.5, -2.5);
+        vector.rotate(210);
+
+        expect(vector.x).toBeCloseTo(-2.549);
+        expect(vector.y).toBeCloseTo(1.415);
+      });
+
+      test('rotate a positive vector by -90 degrees', () => {
+        const vector = new Vector2(1, 0);
+        vector.rotate(-90);
+
+        expect(vector.x).toBeCloseTo(0);
+        expect(vector.y).toBeCloseTo(-1);
+      });
+
+      test('rotate positive float coords by -45 degrees', () => {
+        const vector = new Vector2(1.5, 1.5);
+        vector.rotate(-45);
+
+        expect(vector.x).toBeCloseTo(2.121);
+        expect(vector.y).toBeCloseTo(0);
+      });
 
     });
 
@@ -441,6 +474,18 @@ describe('Vector2 Core Functionality', () => {
     // ===========================================
 
     describe('equals()', () => {
+      
+      test('vectors are equal', () => {
+        const vector = new Vector2(15, 20);
+
+        expect(vector.equals(new Vector2(15, 20))).toBe(true);
+      });
+
+      test('vectors are not equal', () => {
+        const vector = new Vector2(15, 20);
+
+        expect(vector.equals(new Vector2(10, 5))).toBe(false);
+      });
 
     });
 
@@ -449,6 +494,18 @@ describe('Vector2 Core Functionality', () => {
     // ===========================================
 
     describe('toString()', () => {
+
+      test('vector has correct toString 1', () => {
+        const vector = new Vector2(15, 20);
+
+        expect(vector.toString()).toBe('(15, 20)');
+      });
+
+      test('vector has correct toString 2', () => {
+        const vector = new Vector2(5, 10);
+
+        expect(vector.toString()).toBe('(5, 10)');
+      });
 
     });
 
@@ -638,6 +695,62 @@ describe('Vector2 Core Functionality', () => {
 
     describe('Vector2.rotate()', () => {
       
+      test('rotate a positive vector by 30 degrees', () => {
+        const vectorA = new Vector2(2, 0);
+        const vectorB = Vector2.rotate(vectorA, 30);
+
+        expect(vectorB.x).toBeCloseTo(1.732);
+        expect(vectorB.y).toBeCloseTo(1);
+      });
+
+      test('rotate a positive vector by 45 degrees', () => {
+        const vectorA = new Vector2(0, 3);
+        const vectorB = Vector2.rotate(vectorA, 45);
+
+        expect(vectorB.x).toBeCloseTo(-2.121);
+        expect(vectorB.y).toBeCloseTo(2.121);
+      });
+
+      test('rotate positive & negative coords by 60 degrees', () => {
+        const vectorA = new Vector2(4, -2);
+        const vectorB = Vector2.rotate(vectorA, 60);
+
+        expect(vectorB.x).toBeCloseTo(3.732);
+        expect(vectorB.y).toBeCloseTo(2.464);
+      });
+
+      test('rotate negative & positive coords by 120 degrees', () => {
+        const vectorA = new Vector2(-3, 5);
+        const vectorB = Vector2.rotate(vectorA, 120);
+
+        expect(vectorB.x).toBeCloseTo(-2.830);
+        expect(vectorB.y).toBeCloseTo(-5.098);
+      });
+
+      test('rotate positive & negative float coords by 210 degrees', () => {
+        const vectorA = new Vector2(1.5, -2.5);
+        const vectorB = Vector2.rotate(vectorA, 210);
+
+        expect(vectorB.x).toBeCloseTo(-2.549);
+        expect(vectorB.y).toBeCloseTo(1.415);
+      });
+
+      test('rotate a positive vector by -90 degrees', () => {
+        const vectorA = new Vector2(1, 0);
+        const vectorB = Vector2.rotate(vectorA, -90);
+
+        expect(vectorB.x).toBeCloseTo(0);
+        expect(vectorB.y).toBeCloseTo(-1);
+      });
+
+      test('rotate positive float coords by -45 degrees', () => {
+        const vectorA = new Vector2(1.5, 1.5);
+        const vectorB = Vector2.rotate(vectorA, -45);
+
+        expect(vectorB.x).toBeCloseTo(2.121);
+        expect(vectorB.y).toBeCloseTo(0);
+      });
+
     });
 
   });

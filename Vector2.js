@@ -7,6 +7,8 @@
  * @author Adrien P.
  */
 
+import { degreesToRadians } from "./math-utils";
+
 /**
  * Represent a 2D math vector.
  * 
@@ -251,4 +253,4 @@ class Vector2
 	}
 }
 
-module.exports = Vector2;
+export default Vector2;
