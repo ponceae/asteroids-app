@@ -7,7 +7,7 @@
  * @author Adrien P.
  */
 
-import { degreesToRadians } from "./math-utils";
+import { degreesToRadians } from "./math-utils.js";
 
 /**
  * Represent a 2D math vector.
