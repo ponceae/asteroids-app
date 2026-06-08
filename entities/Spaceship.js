@@ -5,9 +5,9 @@
  * @author Adrien P.
  */
 
-import { SHIP_RADIUS, THRUST_POWER, FRICTION } from "./constants.js";
-import Vector2 from "./Vector2.js";
-import { degreesToRadians } from "./math-utils.js";
+import { SHIP_RADIUS, THRUST_POWER, FRICTION } from "../core/constants.js";
+import Vector2 from "../utils/Vector2.js";
+import { degreesToRadians } from "../utils/math-utils.js";
 
 /**
  * @typedef {Object} ShipVertices

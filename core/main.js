@@ -8,8 +8,8 @@
  * @author Adrien P.
  */
 
-import Spaceship from "./Spaceship.js";
-import Vector2 from "./Vector2.js";
+import Spaceship from "../entities/Spaceship.js";
+import Vector2 from "../utils/Vector2.js";
 
 /**
  * @typedef {Object} star
