@@ -10,6 +10,7 @@
 
 import Spaceship from "../entities/Spaceship.js";
 import Vector2 from "../utils/Vector2.js";
+import { inputs } from "../core/input-listener.js";
 
 /**
  * @typedef {Object} star
@@ -58,7 +59,7 @@ function gameLoop()
  */
 function update()
 {
-
+  ship.update(inputs);
 }
 
 /**
