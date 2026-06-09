@@ -11,6 +11,7 @@
 import Spaceship from "../entities/Spaceship.js";
 import Vector2 from "../utils/Vector2.js";
 import { inputs } from "../core/input-listener.js";
+import Particle from "../entities/Particle.js";
 
 /**
  * @typedef {Object} star
@@ -21,7 +22,9 @@ import { inputs } from "../core/input-listener.js";
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const stars = []
+const stars = [];
+
+let particles = [];
 
 // Create a ship with a spawn point in the center of the canvas.
 const startingPosition = new Vector2(canvas.width / 2, canvas.height / 2);
@@ -55,11 +58,27 @@ function gameLoop()
 }
 
 /**
- * 
+ * Update all of the game entities on every frame.
  */
 function update()
 {
   ship.update(inputs);
+
+  if (inputs.fire)
+  {
+    const newBullet = ship.shoot();
+    if (newBullet !== null)
+    {
+      particles.push(newBullet);
+    }
+  }
+
+  for (let particle of particles)
+  {
+    particle.update();
+  }
+
+  particles = particles.filter(p => !p.isOffScreen(canvas.width, canvas.height));
 }
 
 /**
@@ -77,6 +96,11 @@ function draw()
   }
 
   ship.draw(ctx);
+
+  for (let particle of particles)
+  {
+    particle.draw(ctx);
+  }
 }
 
 generateStars(stars);

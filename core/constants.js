@@ -11,8 +11,13 @@ export const KEY_MAP =
   'KeyA': 'turnLeft',
   'ArrowRight': 'turnRight',
   'KeyD': 'turnRight',
-  'Space': 'Fire',
+  'Space': 'fire',
 }
 
 export const WIDTH = 800;
 export const HEIGHT = 600;
+
+export const PARTICLE_RADIUS = 2;
+export const BULLET_SPEED = 7;
+
+export const SHOT_TIMER = 200;

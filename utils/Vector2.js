@@ -42,6 +42,18 @@ class Vector2
 	}
 
 	/**
+	 * Add raw x and y coordinates to the current vector.
+	 * 
+	 * @param {number} x The x value to add.
+	 * @param {number} y The y value to add. 
+	 */
+	addXY(x, y)
+	{
+		this.x += x;
+		this.y += y;
+	}
+
+	/**
 	 * Sum the current vector coordinates to the other vector coordinates and return it 
 	 * as a new instance.
 	 * 

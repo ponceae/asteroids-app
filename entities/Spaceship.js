@@ -5,9 +5,10 @@
  * @author Adrien P.
  */
 
-import { HEIGHT, SHIP_RADIUS, THRUST_POWER, FRICTION, TURN_SPEED, WIDTH } from "../core/constants.js";
+import { HEIGHT, SHIP_RADIUS, THRUST_POWER, FRICTION, SHOT_TIMER, TURN_SPEED, WIDTH } from "../core/constants.js";
 import Vector2 from "../utils/Vector2.js";
 import { degreesToRadians } from "../utils/math-utils.js";
+import Particle from "./Particle.js";
 
 /**
  * @typedef {Object} ShipVertices
@@ -38,6 +39,7 @@ class Spaceship
    */
   constructor(startingPosition)
   {
+    /** @type {Vector2} The starting position of the ship. */
     this.position = startingPosition;
 
     /** @type {Vector2} The current movement speed and direction. */
@@ -57,38 +59,9 @@ class Spaceship
     
     /** @type {boolean} Whether or not the ship is currently being moved directly. */
     this.isThrusting = false;
-  }
 
-  /**
-   * Update the ship heading, velocity, and thrust. 
-   * 
-   * @param {InputState} inputs The state object tracking action events.
-   */
-  update(inputs)
-  {
-    if (inputs.turnRight)
-    {
-      this.turn(1);
-    }
-
-    if (inputs.turnLeft)
-    {
-      this.turn(-1);
-    }
-
-    if (inputs.thrust)
-    {
-      this.applyThrust();
-    }
-
-    this.applyFriction();
-
-    this.position.x += this.velocity.x;
-    this.position.y += this.velocity.y;
-
-    this.isThrusting = inputs.thrust;
-
-    this.screenWrap();
+    /** @type {number} A timer for whenever the last shot was fired in ms. */
+    this.lastShotT = 0;
   }
 
   /**
@@ -115,22 +88,121 @@ class Spaceship
     ctx.restore();
   }
 
-  #draw_spaceship(ctx)
+  /**
+   * Update the ship heading, velocity, and thrust. 
+   * 
+   * @param {InputState} inputs The state object tracking action events.
+   */
+  update(inputs)
   {
-    const { nose, rearLeft, rearRight } = this.#getVertices();
+    if (inputs.turnRight)
+    {
+      this.turn(1);
+    }
 
-    ctx.beginPath();
-    ctx.moveTo(nose.x, nose.y);
-    ctx.lineTo(rearRight.x, rearRight.y);
-    ctx.lineTo(rearLeft.x, rearLeft.y)
-    ctx.closePath();
-    ctx.stroke();
+    if (inputs.turnLeft)
+    {
+      this.turn(-1);
+    }
+
+    if (inputs.thrust)
+    {
+      this.applyThrust();
+    }
+
+    this.applyFriction();
+
+    this.position.add(this.velocity);
+
+    this.isThrusting = inputs.thrust;
+
+    this.screenWrap();
   }
 
+  /**
+   * Take a direction and rotate the current ship.
+   * 
+   * @param {number} direction The direction to rotate. 
+   */
+  turn(direction)
+  {
+    this.heading += TURN_SPEED * direction;
+  }
+
+  /**
+   * Update the ship's drag based on the friction amount.
+   */
+  applyFriction()
+  {
+    this.velocity.scale(FRICTION);
+  }
+
+  /**
+   * Update the ship's position based on the thrust power.
+   */
+  applyThrust()
+  {
+    this.velocity.addXY(
+      Math.cos(this.heading) * this.thrustPower, 
+      Math.sin(this.heading) * this.thrustPower,
+    );
+  }
+
+  /**
+   * 
+   * @returns 
+   */
+  shoot()
+  {
+    const currentTime = Date.now();
+    if (currentTime - this.lastShotT < SHOT_TIMER)
+    {
+      return null;
+    }
+
+    this.lastShotT = currentTime;
+
+    const {nose} = this.#getVertices();
+
+    return new Particle(nose.x, nose.y, this.heading);
+  }
+
+  /**
+   * Translate the ship's position to the opposite end of the canvas when flown 
+   * off the screen.
+   */
+  screenWrap()
+  {
+    if (this.position.x > (WIDTH + this.radius))
+    {
+      this.position.x = 0;
+    } 
+    else if (this.position.x < -this.radius)
+    {
+      this.position.x = WIDTH + this.radius;
+    }
+
+    if (this.position.y > (HEIGHT + this.radius))
+    {
+      this.position.y = 0;
+    }
+    else if (this.position.y < -this.radius)
+    {
+      this.position.y = HEIGHT + this.radius
+    }
+
+  }
+
+  /**
+   * Render the spaceship thruster onto the canvas.
+   * 
+   * @param {CanvasRenderingContext2D} ctx The master canvas paintbrush. 
+   */
   #draw_flame(ctx)
   {
     const flicker = 28 + Math.random() * 12;
 
+    // All use the base of the spaceship at -10.
     const topBase = this.#getGlobalCoords(-10, -5);
     const topProng = this.#getGlobalCoords(-18, -6);
     const topValley = this.#getGlobalCoords(-14, -2);
@@ -149,6 +221,41 @@ class Spaceship
     ctx.lineTo(botBase.x, botBase.y);
     ctx.closePath();
     ctx.stroke();
+  }
+
+  /**
+   * Render the spaceship onto the canvas.
+   * 
+   * @param {CanvasRenderingContext2D} ctx The master canvas paintbrush.
+   */
+  #draw_spaceship(ctx)
+  {
+    const { nose, rearLeft, rearRight } = this.#getVertices();
+
+    ctx.beginPath();
+    ctx.moveTo(nose.x, nose.y);
+    ctx.lineTo(rearRight.x, rearRight.y);
+    ctx.lineTo(rearLeft.x, rearLeft.y)
+    ctx.closePath();
+    ctx.stroke();
+  }
+
+  /**
+   * Translate a local point into a global rotated point.
+   * 
+   * @param {number} localX The x position relative to the ship.
+   * @param {number} localY The y position relative to the ship.
+   * @returns {Object} The global {x, y} coordinates.
+   */
+  #getGlobalCoords(localX, localY)
+  {
+    const cos = Math.cos(this.heading);
+    const sin = Math.sin(this.heading);
+
+    return {
+      x: this.position.x + (localX * cos) - (localY * sin),
+      y: this.position.y + (localX * sin) + (localY * cos),
+    };
   }
 
   /**
@@ -182,72 +289,6 @@ class Spaceship
       rearLeft: { x: rearLeftX, y: rearLeftY },
       rearRight: { x: rearRightX, y: rearRightY },
     };
-  }
-
-  #getGlobalCoords(localX, localY)
-  {
-    const cos = Math.cos(this.heading);
-    const sin = Math.sin(this.heading);
-
-    return {
-      x: this.position.x + (localX * cos) - (localY * sin),
-      y: this.position.y + (localX * sin) + (localY * cos),
-    }
-  }
-
-  /**
-   * Take a direction and rotate the current ship.
-   * 
-   * @param {number} direction The direction to rotate. 
-   */
-  turn(direction)
-  {
-    this.heading += TURN_SPEED * direction;
-  }
-
-  /**
-   * Update the ship's position based on the thrust power.
-   */
-  applyThrust()
-  {
-    this.velocity.x += Math.cos(this.heading) * this.thrustPower;
-    this.velocity.y += Math.sin(this.heading) * this.thrustPower;
-  }
-
-  applyFriction()
-  {
-    this.velocity.x *= FRICTION;
-    this.velocity.y *= FRICTION;
-  }
-
-  // // Create a particle object at the tip of the ship's triangle and 
-  // // rotation.
-  // shoot()
-  // {
-
-  // }
-
-  // Helper method for update that wraps the ship on the screen.
-  screenWrap()
-  {
-    if (this.position.x > (WIDTH + this.radius))
-    {
-      this.position.x = 0;
-    } 
-    else if (this.position.x < -this.radius)
-    {
-      this.position.x = WIDTH + this.radius;
-    }
-
-    if (this.position.y > (HEIGHT + this.radius))
-    {
-      this.position.y = 0;
-    }
-    else if (this.position.y < -this.radius)
-    {
-      this.position.y = HEIGHT + this.radius
-    }
-
   }
 
 }
