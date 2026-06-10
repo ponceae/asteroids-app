@@ -50,7 +50,7 @@ class Spaceship
     /** @type {Vector2} The starting position of the ship. */
     this.position = startingPosition;
 
-    /** @type {Vector2} The current movement speed and direction. */
+    /** @type {Vector2} The current movement speed. */
     this.velocity = new Vector2(0, 0);
     
     /** @type {number} The current rotation orientation of the ship in radians. */
@@ -183,20 +183,20 @@ class Spaceship
    */
   screenWrap()
   {
-    if (this.position.x > (WIDTH + this.radius))
+    if (this.position.x > (WIDTH + this.radius)) // Right edge
     {
-      this.position.x = 0;
+      this.position.x = 0; 
     } 
-    else if (this.position.x < -this.radius)
+    else if (this.position.x < -this.radius) // Left edge
     {
       this.position.x = WIDTH + this.radius;
     }
 
-    if (this.position.y > (HEIGHT + this.radius))
+    if (this.position.y > (HEIGHT + this.radius)) // Bottom edge
     {
       this.position.y = 0;
     }
-    else if (this.position.y < -this.radius)
+    else if (this.position.y < -this.radius) // Top edge
     {
       this.position.y = HEIGHT + this.radius
     }

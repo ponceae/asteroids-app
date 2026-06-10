@@ -36,9 +36,10 @@ export const ASTEROID_DATA =
   small: 
   {
     radius: 15,
-    minSpeed = 0.08,
-    maxSpeed = 0.13,
+    minSpeed: 0.08,
+    maxSpeed: 0.13,
     points: 100,
+    vertices: 8,
   },
 
   medium:
@@ -47,6 +48,7 @@ export const ASTEROID_DATA =
     minSpeed: 0.05,
     maxSpeed: 0.09,
     points: 50,
+    vertices: 8,
   },
 
   large:
@@ -55,5 +57,8 @@ export const ASTEROID_DATA =
     minSpeed: 0.03,
     maxSpeed: 0.06,
     points: 20,
+    vertices: 8,
   },
 };
+
+export const ASTEROID_VERTICES = 8;

@@ -24,7 +24,10 @@ class Particle
    */
   constructor(x, y, heading)
   {
+    /** @type {Vector2} The current position of the particle. */
     this.position = new Vector2(x, y);
+
+    /** @type {number} The current radius size of the particle. */
     this.radius = PARTICLE_RADIUS;
 
     /** @type {Vector2} The velocity of the particle. */
@@ -63,10 +66,10 @@ class Particle
   isOffScreen()
   {
     return (
-      this.position.x > WIDTH || 
-      this.position.x < 0 || 
-      this.position.y > HEIGHT || 
-      this.position.y < 0
+      this.position.x > WIDTH || // Right edge
+      this.position.x < 0 || // Left edge
+      this.position.y > HEIGHT || // Bottom edge
+      this.position.y < 0 // Top edge
     );
   }
 }
