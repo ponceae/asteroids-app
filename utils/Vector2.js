@@ -10,7 +10,7 @@
 import { degreesToRadians } from "./math-utils.js";
 
 /**
- * Represent a 2D math vector.
+ * Represents a 2D math vector.
  * 
  * Used to handle positions, velocities, and physics. 
  * 
@@ -19,10 +19,10 @@ import { degreesToRadians } from "./math-utils.js";
 class Vector2 
 {
 	/** 
-	 * Construct a vector object given the x and y coordinate.
+	 * Construct a vector object given the X and Y coordinate.
 	 * 
-	 * @param {number} x - The x coordinate of the vector.
-	 * @param {number} y - The y coordinate of the vector.
+	 * @param {number} x - The X coordinate of the vector.
+	 * @param {number} y - The Y coordinate of the vector.
 	 */
 	constructor(x, y) 
 	{
@@ -42,10 +42,10 @@ class Vector2
 	}
 
 	/**
-	 * Add raw x and y coordinates to the current vector.
+	 * Add raw X and Y coordinates to the current vector.
 	 * 
-	 * @param {number} x The x value to add.
-	 * @param {number} y The y value to add. 
+	 * @param {number} x The X value to add.
+	 * @param {number} y The Y value to add. 
 	 */
 	addXY(x, y)
 	{
@@ -78,8 +78,8 @@ class Vector2
 	}
 
 	/**
-	 * Subtract the current vector coordinates and the other vector coordinates and 
-	 * return it as a new instance.
+	 * Subtract the other vector coordinates from the current vector and return it as 
+	 * a new instance.
 	 * 
 	 * @param {Vector2} v1 - The first vector term. 
 	 * @param {Vector2} v2 - The second vector term to subtract from the first.
@@ -216,7 +216,7 @@ class Vector2
 	/**
 	 * Rotate the current vector by the given degrees.
 	 * 
-	 * @param {number} degrees - The degree of the angle. 
+	 * @param {number} degrees - The degree to rotate by. 
 	 */
 	rotate(degrees)
 	{
@@ -247,6 +247,8 @@ class Vector2
 	}
 
 	/**
+	 * Return `true` if this vector equals the other vector.
+	 * 
 	 * @param {Vector2} other - The other vector to check against.
 	 * @returns {boolean} `true` if the current vector equals the other vector, 
 	 * 	`false` otherwise. 
@@ -257,7 +259,7 @@ class Vector2
 	}
 
 	/**
-	 * @returns {String} The string representation of the current vector. 
+	 * @returns {string} The string representation of the current vector. 
 	 */
 	toString()
 	{

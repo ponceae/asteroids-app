@@ -1,3 +1,8 @@
+/**
+ * @module Vector2.test
+ * @author Adrien P.
+ */
+
 import { describe, test, expect } from 'vitest';
 
 import Vector2 from './Vector2.js';

@@ -5,10 +5,18 @@
  * @author Adrien P.
  */
 
-import { HEIGHT, SHIP_RADIUS, THRUST_POWER, FRICTION, SHOT_TIMER, TURN_SPEED, WIDTH } from "../core/constants.js";
-import Vector2 from "../utils/Vector2.js";
-import { degreesToRadians } from "../utils/math-utils.js";
 import Particle from "./Particle.js";
+import Vector2 from "../utils/Vector2.js";
+import { 
+  FRICTION,
+  HEIGHT, 
+  SHIP_RADIUS, 
+  SHOT_TIMER, 
+  THRUST_POWER, 
+  TURN_SPEED, 
+  WIDTH 
+} from "../core/constants.js";
+import { degreesToRadians } from "../utils/math-utils.js";
 
 /**
  * @typedef {Object} ShipVertices
@@ -33,9 +41,9 @@ import Particle from "./Particle.js";
 class Spaceship
 {
   /**
-   * Construct a Spaceship object at the specified position.
+   * Construct a Spaceship object at the specified position vector.
    * 
-   * @param {Vector2} startingPosition The spawn point for the spaceship.
+   * @param {Vector2} startingPosition The spawn point of the spaceship.
    */
   constructor(startingPosition)
   {
@@ -65,7 +73,7 @@ class Spaceship
   }
 
   /**
-   * Translate the ship's properties to pixels. Draws the ship and the ship 
+   * Translate the ship's properties to pixels. Render the ship and the ship 
    * thrust flame.
    * 
    * @param {CanvasRenderingContext2D} ctx The master canvas paintbrush.
@@ -149,8 +157,10 @@ class Spaceship
   }
 
   /**
+   * Determine if a particle can be spawned at the nose of the ship based on the last
+   * time it was fired.
    * 
-   * @returns 
+   * @returns The created particle if valid.
    */
   shoot()
   {
@@ -190,11 +200,10 @@ class Spaceship
     {
       this.position.y = HEIGHT + this.radius
     }
-
   }
 
   /**
-   * Render the spaceship thruster onto the canvas.
+   * Render the spaceship thruster flame onto the canvas.
    * 
    * @param {CanvasRenderingContext2D} ctx The master canvas paintbrush. 
    */
@@ -285,12 +294,11 @@ class Spaceship
       (this.radius * Math.sin(this.heading - degreesToRadians(135)));
 
     return {
-      nose: { x: noseX, y: noseY },
-      rearLeft: { x: rearLeftX, y: rearLeftY },
+      nose:      { x: noseX,      y: noseY },
+      rearLeft:  { x: rearLeftX,  y: rearLeftY },
       rearRight: { x: rearRightX, y: rearRightY },
     };
   }
-
 }
 
 export default Spaceship;

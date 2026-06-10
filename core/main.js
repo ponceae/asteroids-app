@@ -8,10 +8,10 @@
  * @author Adrien P.
  */
 
+import Particle from "../entities/Particle.js";
 import Spaceship from "../entities/Spaceship.js";
 import Vector2 from "../utils/Vector2.js";
 import { inputs } from "../core/input-listener.js";
-import Particle from "../entities/Particle.js";
 
 /**
  * @typedef {Object} star
@@ -31,7 +31,7 @@ const startingPosition = new Vector2(canvas.width / 2, canvas.height / 2);
 const ship = new Spaceship(startingPosition);
 
 /**
- * Generate a list of pixel coordinates that determines where stars will be drawn.
+ * Generate a list of pixel coordinates that determine where stars will be rendered.
  * 
  * @param {Star} stars The array to fill with star objects.
  */
@@ -47,7 +47,7 @@ function generateStars(stars)
 }
 
 /**
- * Execute the main game loop by infinitely drawing and updating the game entities.
+ * Execute the main game loop by infinitely rendering and updating the game entities.
  */
 function gameLoop() 
 {
@@ -58,7 +58,7 @@ function gameLoop()
 }
 
 /**
- * Update all of the game entities on every frame.
+ * Update all of the game entities on every frame refresh.
  */
 function update()
 {
@@ -82,7 +82,7 @@ function update()
 }
 
 /**
- * Draw the game entities.
+ * Render the game entities on every frame refresh and update.
  */
 function draw()
 {

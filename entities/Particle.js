@@ -43,7 +43,8 @@ class Particle
   }
 
   /**
-   * Render the particle onto the canvas.
+   * Translate the particle's properties to pixels. Render the particle onto 
+   * the canvas.
    * 
    * @param {CanvasRenderingContext2D} ctx The master canvas paintbrush. 
    */
@@ -56,6 +57,9 @@ class Particle
     ctx.fill();
   }
 
+  /**
+   * @returns `true` if the particle is out of bounds, `false` otherwise.
+   */
   isOffScreen()
   {
     return (

@@ -32,6 +32,7 @@ function handleKey(event, isPressed)
   {
     inputs[action] = isPressed;
 
+    // Overwrite browser scrolling
     if (event.code == 'Space' || event.code.startsWith('Arrow'))
     {
       event.preventDefault();
