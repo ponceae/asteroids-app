@@ -16,7 +16,7 @@ import {
   TURN_SPEED, 
   WIDTH 
 } from "../core/constants.js";
-import { degreesToRadians } from "../utils/math-utils.js";
+import { degreesToRadians, screenWrap } from "../utils/math-utils.js";
 
 /**
  * @typedef {Object} ShipVertices
@@ -124,7 +124,7 @@ class Spaceship
 
     this.isThrusting = inputs.thrust;
 
-    this.screenWrap();
+    screenWrap(this.position, this.radius);
   }
 
   /**
@@ -156,6 +156,13 @@ class Spaceship
     );
   }
 
+  restart()
+  {
+    this.position = new Vector2(WIDTH / 2, HEIGHT / 2);
+    this.velocity = new Vector2(0, 0);
+    this.heading = 0;
+  }
+
   /**
    * Determine if a particle can be spawned at the nose of the ship based on the last
    * time it was fired.
@@ -175,31 +182,6 @@ class Spaceship
     const {nose} = this.#getVertices();
 
     return new Particle(nose.x, nose.y, this.heading);
-  }
-
-  /**
-   * Translate the ship's position to the opposite end of the canvas when flown 
-   * off the screen.
-   */
-  screenWrap()
-  {
-    if (this.position.x > (WIDTH + this.radius)) // Right edge
-    {
-      this.position.x = 0; 
-    } 
-    else if (this.position.x < -this.radius) // Left edge
-    {
-      this.position.x = WIDTH + this.radius;
-    }
-
-    if (this.position.y > (HEIGHT + this.radius)) // Bottom edge
-    {
-      this.position.y = 0;
-    }
-    else if (this.position.y < -this.radius) // Top edge
-    {
-      this.position.y = HEIGHT + this.radius
-    }
   }
 
   /**

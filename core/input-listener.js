@@ -16,6 +16,7 @@ export const inputs =
   turnLeft: false,
   turnRight: false,
   fire: false,
+  start: false,
 }
 
 /**

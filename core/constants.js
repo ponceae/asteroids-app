@@ -19,6 +19,7 @@ export const KEY_MAP =
   'ArrowRight': 'turnRight',
   'KeyD': 'turnRight',
   'Space': 'fire',
+  'Enter': 'start',
 }
 
 // Canvas Dimensions
@@ -36,8 +37,8 @@ export const ASTEROID_DATA =
   small: 
   {
     radius: 15,
-    minSpeed: 0.08,
-    maxSpeed: 0.13,
+    minSpeed: 0.65,
+    maxSpeed: 0.75,
     points: 100,
     vertices: 8,
   },
@@ -45,8 +46,8 @@ export const ASTEROID_DATA =
   medium:
   {
     radius: 30,
-    minSpeed: 0.05,
-    maxSpeed: 0.09,
+    minSpeed: 0.55,
+    maxSpeed: 0.65,
     points: 50,
     vertices: 8,
   },
@@ -54,8 +55,8 @@ export const ASTEROID_DATA =
   large:
   {
     radius: 50,
-    minSpeed: 0.03,
-    maxSpeed: 0.06,
+    minSpeed: 0.45,
+    maxSpeed: 0.55,
     points: 20,
     vertices: 8,
   },

@@ -6,6 +6,7 @@
  */
 
 import { ASTEROID_DATA, ASTEROID_VERTICES, HEIGHT, WIDTH } from "../core/constants.js"
+import { screenWrap } from "../utils/math-utils.js";
 import Vector2 from "../utils/Vector2.js";
 
 /**
@@ -22,9 +23,11 @@ class Asteroid
    * to create. Defaults to `small` if the provided value does not exist in the 
    * asteroid data.
    */
-  constructor(size = 'small')
+  constructor(size = 'small', startingPosition = null)
   {
     const config = ASTEROID_DATA[size] ?? ASTEROID_DATA.small;
+
+    this.size = size;
 
     /** @type {number} The current radius size of the asteroid. */
     this.radius = config.radius;
@@ -33,13 +36,90 @@ class Asteroid
     this.points = config.points;
 
     /** @type {Vector2} The spawn point of the asteroid. */
-    this.position = this.#getPosition();
+    this.position = startingPosition === null 
+      ? this.#getPosition() 
+      : startingPosition;
 
     /** @type {Vector2} The current movement speed. */
     this.velocity = this.#getVelocity(config.minSpeed, config.maxSpeed);
   
     /** @type {Array} An array of normalized data points to render a shape. */
     this.shape = this.#generateShape();
+
+    /** @type {number} The scoring amount for destroying the asteroid. */
+    this.score = config.points;
+  }
+
+  /**
+   * Update the asteroid position.
+   */
+  update()
+  {
+    this.position.add(this.velocity);
+    screenWrap(this.position, this.radius);
+  }
+
+  /**
+   * Translate the asteroid's properties into pixels. Render the asteroid.
+   *  
+   * @param {CanvasRenderingContext2D} ctx The master canvas paintbrush   
+   */
+  draw(ctx)
+  {
+    ctx.strokeStyle = 'white';
+
+    const angle = (Math.PI * 2) / ASTEROID_VERTICES;
+
+    ctx.beginPath();
+
+    for (let i = 0; i < this.shape.length; i++)
+    {
+      const curr_angle = i * angle;
+      const dist = this.radius * this.shape[i];
+      
+      const x = this.position.x + (Math.cos(curr_angle) * dist);
+      const y = this.position.y + (Math.sin(curr_angle) * dist);
+
+      if (i == 0)
+      {
+        ctx.moveTo(x, y);
+      }
+      
+      ctx.lineTo(x, y);
+    }
+
+    ctx.closePath();
+    ctx.stroke();
+  }
+
+  /**
+   * Create and return an array of asteroids with positions at the parent asteroid.
+   * 
+   * @returns {Array} The array of child asteroids.
+   */
+  split()
+  {
+    const offset = 10;
+
+    const posA = new Vector2(this.position.x + offset, this.position.y - offset);
+    const posB = new Vector2(this.position.x - offset, this.position.y + offset);
+    
+    if (this.size === 'large')
+    {
+      return [
+        new Asteroid('medium', posA),
+        new Asteroid('medium', posB),
+      ]
+    }
+    else if (this.size == 'medium')
+    {
+      return [
+        new Asteroid('small', posA),
+        new Asteroid('small', posB),
+      ]
+    }
+
+    return [];
   }
 
   /**
@@ -53,13 +133,12 @@ class Asteroid
   {
     const angle = Math.random() * (Math.PI * 2);
     const speed = (
-      config.minSpeed + Math.random() * 
-      (config.maxSpeed - config.minSpeed)
+      minSpeed + Math.random() * 
+      (maxSpeed - minSpeed)
     );
 
     return new Vector2(Math.cos(angle) * speed, Math.sin(angle) * speed);
   }
-
 
   /**
    * Get a random edge of the canvas and generate a random position on that edge.
@@ -111,18 +190,6 @@ class Asteroid
     
     return shape;
   }
-
-  update()
-  {
-    this.position.add(this.velocity);
-  }
-
-  draw()
-  {
-    
-  }
-
 }
-
 
 export default Asteroid;
