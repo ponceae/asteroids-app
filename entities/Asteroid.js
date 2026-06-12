@@ -5,9 +5,14 @@
  * @author Adrien P.
  */
 
-import { ASTEROID_DATA, ASTEROID_VERTICES, HEIGHT, WIDTH } from "../core/constants.js"
-import { screenWrap } from "../utils/math-utils.js";
 import Vector2 from "../utils/Vector2.js";
+import { 
+  ASTEROID_DATA, 
+  ASTEROID_VERTICES, 
+  HEIGHT, 
+  WIDTH 
+} from "../core/constants.js"
+import { screenWrap } from "../utils/math-utils.js";
 
 /**
  * Represents the enemy/goal to shoot in the game.
@@ -19,28 +24,28 @@ class Asteroid
   /**
    * Create an asteroid based on the given size.
    * 
-   * @param {'small' | 'medium' | 'large'} [size='small'] The size of the asteroid 
+   * @param {'small' | 'medium' | 'large'} [size = 'small'] The size of the asteroid 
    * to create. Defaults to `small` if the provided value does not exist in the 
    * asteroid data.
+   * @param {Vector2} [startingPosition = null] The spawn point of the asteroid. 
+   * Defaults to a random edge position if not provided.
    */
   constructor(size = 'small', startingPosition = null)
   {
     const config = ASTEROID_DATA[size] ?? ASTEROID_DATA.small;
 
+    /** @type {string} The current size classification. */
     this.size = size;
 
-    /** @type {number} The current radius size of the asteroid. */
+    /** @type {number} The current radius size. */
     this.radius = config.radius;
 
-    /** @type {number} How many points the asteroid is worth. */
-    this.points = config.points;
-
-    /** @type {Vector2} The spawn point of the asteroid. */
+    /** @type {Vector2} The spawn point. */
     this.position = startingPosition === null 
       ? this.#getPosition() 
       : startingPosition;
 
-    /** @type {Vector2} The current movement speed. */
+    /** @type {Vector2} The current velocity. */
     this.velocity = this.#getVelocity(config.minSpeed, config.maxSpeed);
   
     /** @type {Array} An array of normalized data points to render a shape. */
@@ -48,10 +53,13 @@ class Asteroid
 
     /** @type {number} The scoring amount for destroying the asteroid. */
     this.score = config.points;
+
+    /** @type {boolean} Whether the current asteroid exists on the frame. */
+    this.dead = false;
   }
 
   /**
-   * Update the asteroid position.
+   * Update the asteroid position and screen wrap if flown off screen.
    */
   update()
   {
@@ -60,32 +68,35 @@ class Asteroid
   }
 
   /**
-   * Translate the asteroid's properties into pixels. Render the asteroid.
+   * Translate the asteroid's properties into pixels and render the asteroid
+   * onto the canvas.
    *  
-   * @param {CanvasRenderingContext2D} ctx The master canvas paintbrush   
+   * @param {CanvasRenderingContext2D} ctx The master canvas paintbrush.  
    */
   draw(ctx)
   {
     ctx.strokeStyle = 'white';
 
-    const angle = (Math.PI * 2) / ASTEROID_VERTICES;
+    const angleStep = (Math.PI * 2) / ASTEROID_VERTICES;
 
     ctx.beginPath();
 
     for (let i = 0; i < this.shape.length; i++)
     {
-      const curr_angle = i * angle;
+      const currAngle = i * angleStep;
       const dist = this.radius * this.shape[i];
       
-      const x = this.position.x + (Math.cos(curr_angle) * dist);
-      const y = this.position.y + (Math.sin(curr_angle) * dist);
+      const x = this.position.x + (Math.cos(currAngle) * dist);
+      const y = this.position.y + (Math.sin(currAngle) * dist);
 
       if (i == 0)
       {
         ctx.moveTo(x, y);
       }
-      
-      ctx.lineTo(x, y);
+      else
+      {
+        ctx.lineTo(x, y);
+      }
     }
 
     ctx.closePath();
@@ -93,7 +104,7 @@ class Asteroid
   }
 
   /**
-   * Create and return an array of asteroids with positions at the parent asteroid.
+   * Create and return an array of asteroids spawned at the parent's last position.
    * 
    * @returns {Array} The array of child asteroids.
    */
@@ -123,27 +134,9 @@ class Asteroid
   }
 
   /**
-   * Use the minimum and maximum speeds to generate a vector using a random angle.
+   * Generate a random edge and edge position.
    * 
-   * @param {number} minSpeed The minimum possible speed of the asteroid. 
-   * @param {number} maxSpeed The maximum possible speed of the asteroid.
-   * @returns The vector using the min and max speeds. 
-   */
-  #getVelocity(minSpeed, maxSpeed)
-  {
-    const angle = Math.random() * (Math.PI * 2);
-    const speed = (
-      minSpeed + Math.random() * 
-      (maxSpeed - minSpeed)
-    );
-
-    return new Vector2(Math.cos(angle) * speed, Math.sin(angle) * speed);
-  }
-
-  /**
-   * Get a random edge of the canvas and generate a random position on that edge.
-   * 
-   * @returns {Vector2} The asteroid position. 
+   * @returns {Vector2} The random position. 
    */
   #getPosition()
   {
@@ -177,7 +170,7 @@ class Asteroid
   }
 
   /**
-   * @returns {Array<number>} An array of normalized data points to render an asteroid.
+   * @returns {Array<number>} An array of normalized data points.
    */
   #generateShape()
   {
@@ -189,6 +182,21 @@ class Asteroid
     }
     
     return shape;
+  }
+
+  /**
+   * Use the minimum and maximum speeds to generate a vector using a random angle.
+   * 
+   * @param {number} minSpeed The minimum possible speed of the asteroid. 
+   * @param {number} maxSpeed The maximum possible speed of the asteroid.
+   * @returns The vector based on the minimum and maximum speed. 
+   */
+  #getVelocity(minSpeed, maxSpeed)
+  {
+    const angle = Math.random() * (Math.PI * 2);
+    const speed = (minSpeed + Math.random() * (maxSpeed - minSpeed));
+
+    return new Vector2(Math.cos(angle) * speed, Math.sin(angle) * speed);
   }
 }
 

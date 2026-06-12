@@ -65,4 +65,17 @@ function screenWrap(position, radius)
   }
 }
 
-export { detectCollision, degreesToRadians, screenWrap };
+/**
+ * @returns `true` if the entity is out of bounds, `false` otherwise.
+ */
+function isOffScreen(x, y)
+{
+  return (
+    x > WIDTH || // Right edge
+    x < 0 || // Left edge
+    y > HEIGHT || // Bottom edge
+    y < 0 // Top edge
+  );
+}
+
+export { detectCollision, degreesToRadians, isOffScreen, screenWrap };

@@ -6,7 +6,12 @@
  */
 
 import Vector2 from "../utils/Vector2.js";
-import { BULLET_SPEED, HEIGHT, PARTICLE_RADIUS, WIDTH } from "../core/constants.js";
+import { 
+  PARTICLE_SPEED, 
+  HEIGHT, 
+  PARTICLE_RADIUS, 
+  WIDTH 
+} from "../core/constants.js";
 
 /**
  * Represents the player ship bullets.
@@ -16,25 +21,28 @@ import { BULLET_SPEED, HEIGHT, PARTICLE_RADIUS, WIDTH } from "../core/constants.
 class Particle
 {
   /**
-   * Construct a particle at the specified position and direction.
+   * Construct a particle at the specified position and given direction.
    * 
-   * @param {x} x The x position of the particle.  
-   * @param {y} y The y position of the particle.  
+   * @param {x} x The X position of the particle.  
+   * @param {y} y The Y position of the particle.  
    * @param {number} heading The direction the particle is traveling.
    */
   constructor(x, y, heading)
   {
-    /** @type {Vector2} The current position of the particle. */
+    /** @type {Vector2} The current position. */
     this.position = new Vector2(x, y);
 
-    /** @type {number} The current radius size of the particle. */
+    /** @type {number} The current radius size. */
     this.radius = PARTICLE_RADIUS;
 
-    /** @type {Vector2} The velocity of the particle. */
+    /** @type {Vector2} The current velocity. */
     this.velocity = new Vector2(
-      Math.cos(heading) * BULLET_SPEED,
-      Math.sin(heading) * BULLET_SPEED,
+      Math.cos(heading) * PARTICLE_SPEED,
+      Math.sin(heading) * PARTICLE_SPEED,
     );
+
+    /** @type {boolean} Whether the particle exists on the canvas. */
+    this.dead = false;
   }
 
   /**
@@ -46,7 +54,7 @@ class Particle
   }
 
   /**
-   * Translate the particle's properties to pixels. Render the particle onto 
+   * Translate the particle's properties to pixels and render the particle onto 
    * the canvas.
    * 
    * @param {CanvasRenderingContext2D} ctx The master canvas paintbrush. 
@@ -56,19 +64,6 @@ class Particle
     ctx.beginPath();
     ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
     ctx.fill();
-  }
-
-  /**
-   * @returns `true` if the particle is out of bounds, `false` otherwise.
-   */
-  isOffScreen()
-  {
-    return (
-      this.position.x > WIDTH || // Right edge
-      this.position.x < 0 || // Left edge
-      this.position.y > HEIGHT || // Bottom edge
-      this.position.y < 0 // Top edge
-    );
   }
 }
 

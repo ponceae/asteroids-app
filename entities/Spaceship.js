@@ -10,6 +10,8 @@ import Vector2 from "../utils/Vector2.js";
 import { 
   FRICTION,
   HEIGHT, 
+  MID_HEIGHT,
+  MID_WIDTH,
   SHIP_RADIUS, 
   SHOT_TIMER, 
   THRUST_POWER, 
@@ -47,34 +49,34 @@ class Spaceship
    */
   constructor(startingPosition)
   {
-    /** @type {Vector2} The starting position of the ship. */
+    /** @type {Vector2} The starting position. */
     this.position = startingPosition;
 
     /** @type {Vector2} The current movement speed. */
     this.velocity = new Vector2(0, 0);
     
-    /** @type {number} The current rotation orientation of the ship in radians. */
+    /** @type {number} The current rotation orientation in radians. */
     this.heading = 0;
 
-    /** @type {number} The physical size of the ship. */
+    /** @type {number} The current radius size. */
     this.radius = SHIP_RADIUS;
     
-    /** @type {number} The amount of thrust to apply to the ship. */
+    /** @type {number} The amount of thrust to apply. */
     this.thrustPower = THRUST_POWER;
 
-    /** @type {number} The amount of drag to apply to the ship. */
+    /** @type {number} The amount of drag when not thrusting. */
     this.friction = FRICTION;
     
-    /** @type {boolean} Whether or not the ship is currently being moved directly. */
+    /** @type {boolean} Whether or not the ship is currently thrusting. */
     this.isThrusting = false;
 
-    /** @type {number} A timer for whenever the last shot was fired in ms. */
+    /** @type {number} A timer for whenever the last shot was fired in milliseconds. */
     this.lastShotT = 0;
   }
 
   /**
-   * Translate the ship's properties to pixels. Render the ship and the ship 
-   * thrust flame.
+   * Translate the ship's properties to pixels and render the ship and the 
+   * thruster flame.
    * 
    * @param {CanvasRenderingContext2D} ctx The master canvas paintbrush.
    */
@@ -121,14 +123,13 @@ class Spaceship
     this.applyFriction();
 
     this.position.add(this.velocity);
-
     this.isThrusting = inputs.thrust;
 
     screenWrap(this.position, this.radius);
   }
 
   /**
-   * Take a direction and rotate the current ship.
+   * Take a direction and rotate the ship.
    * 
    * @param {number} direction The direction to rotate. 
    */
@@ -138,7 +139,7 @@ class Spaceship
   }
 
   /**
-   * Update the ship's drag based on the friction amount.
+   * Update the ship's drag based on the amount of friction present.
    */
   applyFriction()
   {
@@ -156,9 +157,12 @@ class Spaceship
     );
   }
 
+  /**
+   * Reset some of the ship's attributes on a game restart.
+   */
   restart()
   {
-    this.position = new Vector2(WIDTH / 2, HEIGHT / 2);
+    this.position = new Vector2(MID_WIDTH, MID_HEIGHT);
     this.velocity = new Vector2(0, 0);
     this.heading = 0;
   }
@@ -193,7 +197,6 @@ class Spaceship
   {
     const flicker = 28 + Math.random() * 12;
 
-    // All use the base of the spaceship at -10.
     const topBase = this.#getGlobalCoords(-10, -5);
     const topProng = this.#getGlobalCoords(-18, -6);
     const topValley = this.#getGlobalCoords(-14, -2);
@@ -234,9 +237,9 @@ class Spaceship
   /**
    * Translate a local point into a global rotated point.
    * 
-   * @param {number} localX The x position relative to the ship.
-   * @param {number} localY The y position relative to the ship.
-   * @returns {Object} The global {x, y} coordinates.
+   * @param {number} localX The X position relative to the ship.
+   * @param {number} localY The Y position relative to the ship.
+   * @returns {Object} The global {X, Y} coordinates.
    */
   #getGlobalCoords(localX, localY)
   {
@@ -250,10 +253,9 @@ class Spaceship
   }
 
   /**
-   * Use the current position and heading to determine the three spaceship
-   * vertices in order to detect collisions and to draw it.
+   * Use the current position and heading to determine the three spaceship vertices.
    * 
-   * @returns {ShipVertices} An object containing the x and y coordinates for each 
+   * @returns {ShipVertices} An object containing the Y and Y coordinates for each 
    * spaceship vertice.
    */
   #getVertices()
