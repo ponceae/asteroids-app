@@ -1,7 +1,7 @@
 body {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   height: 100vh;
   background-color: #222;
   margin: 0;
@@ -10,7 +10,6 @@ body {
 
 #game {
   height: 100dvh;
-  position: relative;
   margin: 0 auto;
   aspect-ratio: 4 / 3;
 }
@@ -75,12 +74,5 @@ body {
   
   #game {
     display: none;
-  }
-}
-
-@media (pointer: coarse) and (orientation: landscape) {
-  #game {
-    height: calc(100dvh);
-    width: calc((100dvh) * (4 / 3));
   }
 }
