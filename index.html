@@ -4,12 +4,31 @@
     <meta charset="utf-8">
     <title>Asteroids</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
 
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div id="landscape-prompt">
+      <h2>Rotate device to play</h2>
+    </div>
+
+    <div id="game">
+
+      <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+      <div id="mobile-buttons">
+        <div class="steering">
+          <button id="btn-left">◀</button>
+          <button id="btn-right">▶</button>
+        </div>
+        <div class="actions">
+          <button id="btn-thrust">Thrust</button>
+          <button id="btn-fire">Fire</button>
+        </div>
+      </div>
+
+    </div>
 
     <script type="module" src="core/main.js"></script>
   </body>

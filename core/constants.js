@@ -22,6 +22,14 @@ export const KEY_MAP =
   'Enter': 'start',
 }
 
+export const TOUCH_MAP = 
+{
+  'btn-left': 'turnLeft',
+  'btn-right': 'turnRight',
+  'btn-thrust': 'thrust',
+  'btn-fire': 'fire',
+}
+
 // Canvas Dimensions
 export const WIDTH = 800;
 export const HEIGHT = 600;
