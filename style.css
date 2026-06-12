@@ -80,7 +80,7 @@ body {
 
 @media (pointer: coarse) and (orientation: landscape) {
   #game {
-    height: calc(100dvh - env(safe-area-inset-top, 45px));
-    width: calc((100dvh - env(safe-area-inset-top, 45px)) * (4 / 3));
+    height: calc(100dvh - 45px);
+    width: calc((100dvh - 45px) * (4 / 3));
   }
 }
