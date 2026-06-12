@@ -70,7 +70,7 @@ function generateStars(stars)
  */
 function generateAsteroids()
 {
-  const num_asteroids;
+  let num_asteroids = 0;
 
   if (wave > 4)
   {
@@ -271,7 +271,7 @@ function update()
 /**
  * Render the game entities and the score/life count.
  */
-drawEntities()
+function drawEntities()
 {
   ctx.fillStyle = '#00FF00';
   ctx.textAlign = 'left';

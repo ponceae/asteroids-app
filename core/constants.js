@@ -71,7 +71,7 @@ export const WAVE_DATA =
   3: 11,
   4: 12,
 };
-export const MAX_NUM_ASTEROIDS;
+export const MAX_NUM_ASTEROIDS = 12;
 
 // Debris Constants
 export const DEBRIS_LIFETIME = 30;
