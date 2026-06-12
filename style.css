@@ -2,14 +2,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100dvh;
+  height: 100vh;
   background-color: #222;
   margin: 0;
   overflow: hidden;
 }
 
 #game {
-  min-height: 100dvh;
   position: relative;
   width: min(800px, 100vw, calc(100vh * (4 / 3)));
   margin: 0 auto;
@@ -73,14 +72,7 @@ body {
   #landscape-prompt {
     display: flex;
   }
-
   #game {
     display: none;
-  }
-}
-
-@media (pointer: coarse) and (orientation: landscape) {
-  body {
-    overflow-y: auto;
   }
 }
