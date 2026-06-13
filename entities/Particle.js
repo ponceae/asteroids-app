@@ -6,12 +6,7 @@
  */
 
 import Vector2 from "../utils/Vector2.js";
-import { 
-  PARTICLE_SPEED, 
-  HEIGHT, 
-  PARTICLE_RADIUS, 
-  WIDTH 
-} from "../core/constants.js";
+import { PARTICLE_SPEED, PARTICLE_RADIUS, } from "../core/constants.js";
 
 /**
  * Represents the player ship bullets.
@@ -23,8 +18,8 @@ class Particle
   /**
    * Construct a particle at the specified position and given direction.
    * 
-   * @param {x} x The X position of the particle.  
-   * @param {y} y The Y position of the particle.  
+   * @param {number} x The X position of the particle.  
+   * @param {number} y The Y position of the particle.  
    * @param {number} heading The direction the particle is traveling.
    */
   constructor(x, y, heading)

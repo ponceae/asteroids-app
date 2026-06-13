@@ -14,6 +14,8 @@ import {
 } from "../core/constants.js"
 import { screenWrap } from "../utils/math-utils.js";
 
+const angleStep = (Math.PI * 2) / ASTEROID_VERTICES;
+
 /**
  * Represents the enemy/goal to shoot in the game.
  * 
@@ -48,7 +50,7 @@ class Asteroid
     /** @type {Vector2} The current velocity. */
     this.velocity = this.#getVelocity(config.minSpeed, config.maxSpeed);
   
-    /** @type {Array} An array of normalized data points to render a shape. */
+    /** @type {number[]} An array of normalized data points to render a shape. */
     this.shape = this.#generateShape();
 
     /** @type {number} The scoring amount for destroying the asteroid. */
@@ -77,8 +79,6 @@ class Asteroid
   {
     ctx.strokeStyle = 'white';
 
-    const angleStep = (Math.PI * 2) / ASTEROID_VERTICES;
-
     ctx.beginPath();
 
     for (let i = 0; i < this.shape.length; i++)
@@ -106,7 +106,7 @@ class Asteroid
   /**
    * Create and return an array of asteroids spawned at the parent's last position.
    * 
-   * @returns {Array} The array of child asteroids.
+   * @returns {Asteroid[]} The array of child asteroids.
    */
   split()
   {
@@ -189,7 +189,7 @@ class Asteroid
    * 
    * @param {number} minSpeed The minimum possible speed of the asteroid. 
    * @param {number} maxSpeed The maximum possible speed of the asteroid.
-   * @returns The vector based on the minimum and maximum speed. 
+   * @returns {Vector2} The vector based on the minimum and maximum speed. 
    */
   #getVelocity(minSpeed, maxSpeed)
   {

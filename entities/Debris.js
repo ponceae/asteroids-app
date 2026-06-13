@@ -54,13 +54,13 @@ class Debris
 
   /**
    * Translate the debris' properties into pixels and render it onto the canvas.
-   
+   *
    * @param {CanvasRenderingContext2D} ctx The master canvas paintbrush.
    */
   draw(ctx)
   {
     const tailX = this.position.x - (this.velocity.x * 2);
-    const tailY = this.position.y - (this.velocity.x * 2);
+    const tailY = this.position.y - (this.velocity.y * 2);
 
     ctx.strokeStyle = 'white';
     ctx.lineWidth = 2;

@@ -4,7 +4,7 @@
  * Listens for user input and maps it based on whether the key/touch was pressed or 
  * not.
  * 
- * @module Spaceship
+ * @module input-listener
  * @author Adrien P.
  */
 
@@ -58,11 +58,19 @@ function bindTouchButton(buttonId, action)
 
   button.addEventListener('touchstart', (e) => {
     e.preventDefault();
+    e.stopPropagation();
     inputs[action] = true;
   });
 
   button.addEventListener('touchend', (e) => {
     e.preventDefault();
+    e.stopPropagation();
+    inputs[action] = false;
+  });
+
+  button.addEventListener('touchcancel', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     inputs[action] = false;
   });
 }

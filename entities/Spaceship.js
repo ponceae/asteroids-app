@@ -32,7 +32,7 @@ import { degreesToRadians, screenWrap } from "../utils/math-utils.js";
  * @property {boolean} thrust - Whether the thrust engine is active.
  * @property {boolean} turnLeft - Whether the ship is turning left.
  * @property {boolean} turnRight - Whether the ship is turning right.
- * @property {boolean} firing - Whether the ship is shooting.
+ * @property {boolean} fire - Whether the ship is shooting.
  */
 
 /**
@@ -49,6 +49,9 @@ class Spaceship
    */
   constructor(startingPosition)
   {
+    /** @type {Vector2} A copy of the starting position for game restarts. */
+    this.spawnPoint = new Vector2(startingPosition.x, startingPosition.y);
+
     /** @type {Vector2} The starting position. */
     this.position = startingPosition;
 
@@ -162,7 +165,7 @@ class Spaceship
    */
   restart()
   {
-    this.position = new Vector2(MID_WIDTH, MID_HEIGHT);
+    this.position = new Vector2(this.spawnPoint.x, this.spawnPoint.y);
     this.velocity = new Vector2(0, 0);
     this.heading = 0;
   }
@@ -171,7 +174,7 @@ class Spaceship
    * Determine if a particle can be spawned at the nose of the ship based on the last
    * time it was fired.
    * 
-   * @returns The created particle if valid.
+   * @returns {Particle | null} The created particle if valid, `null` otherwise.
    */
   shoot()
   {
@@ -255,27 +258,29 @@ class Spaceship
   /**
    * Use the current position and heading to determine the three spaceship vertices.
    * 
-   * @returns {ShipVertices} An object containing the Y and Y coordinates for each 
-   * spaceship vertice.
+   * @returns {ShipVertices} An object containing the X and Y coordinates for each 
+   * spaceship vertex.
    */
   #getVertices()
   {
     const noseX = this.position.x + (this.radius * Math.cos(this.heading));
     const noseY = this.position.y + (this.radius * Math.sin(this.heading));
   
+    const angleOffset = degreesToRadians(135);
+
     const rearRightX = 
       this.position.x + 
-      (this.radius * Math.cos(this.heading + degreesToRadians(135)));
+      (this.radius * Math.cos(this.heading + angleOffset));
     const rearRightY = 
       this.position.y + 
-      (this.radius * Math.sin(this.heading + degreesToRadians(135)));
+      (this.radius * Math.sin(this.heading + angleOffset));
 
     const rearLeftX = 
       this.position.x + 
-      (this.radius * Math.cos(this.heading - degreesToRadians(135)));
+      (this.radius * Math.cos(this.heading - angleOffset));
     const rearLeftY = 
       this.position.y + 
-      (this.radius * Math.sin(this.heading - degreesToRadians(135)));
+      (this.radius * Math.sin(this.heading - angleOffset));
 
     return {
       nose:      { x: noseX,      y: noseY },

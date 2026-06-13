@@ -1,4 +1,6 @@
 /**
+ * Global costants for the asteroids app.
+ * 
  * @module constants
  * @author Adrien P.
  */
@@ -9,7 +11,7 @@ export const THRUST_POWER = 0.1;
 export const FRICTION = 0.99;
 export const TURN_SPEED = 0.05;
 
-// Listener Map
+// Listener Map (KEYBOARD)
 export const KEY_MAP = 
 {
   'ArrowUp': 'thrust',
@@ -22,6 +24,7 @@ export const KEY_MAP =
   'Enter': 'start',
 }
 
+// Listener Map (MOBILE)
 export const TOUCH_MAP = 
 {
   'btn-left': 'turnLeft',
