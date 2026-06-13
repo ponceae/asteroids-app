@@ -315,12 +315,19 @@ function draw()
 
   if (gameStatus === 'MENU')
   {
+    const isMobile = (
+      window.matchMedia('(pointer: coarse)').matches || 
+      navigator.maxTouchPoints > 0
+    );
+
+    const prompt = isMobile ? 'Tap to Start' : 'Press ENTER to Start';
+
     ctx.font = '17px consolas';
     ctx.fillStyle = '#00FF00';
     ctx.textAlign = 'center';
     ctx.fillText('ASTEROIDS', canvas.width / 2, canvas.height / 2);
     ctx.font = '12px consolas';
-    ctx.fillText('Press ENTER to Start', canvas.width / 2, canvas.height / 2 + 30);
+    ctx.fillText(prompt, canvas.width / 2, canvas.height / 2 + 30);
   }
   else if (gameStatus === 'GAMEOVER')
   {
