@@ -4,7 +4,7 @@
  * Prepares all of the game entities to be drawn onto the screen and updated 
  * on each frame.
  * 
- * @module Spaceship
+ * @module Main
  * @author Adrien P.
  */
 
@@ -30,6 +30,11 @@ import { detectCollision, isOffScreen } from "../utils/math-utils.js";
  * @property {number} y
  */
 
+const isMobile = (
+  window.matchMedia('(pointer: coarse)').matches ||
+  navigator.maxTouchPoints > 0
+);
+
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -51,8 +56,9 @@ const ship = new Spaceship(startingPosition);
 
 /**
  * Generate a list of pixel coordinates that determine where stars will be rendered.
+ * Add the coordinates for the star to the global `stars` array.
  * 
- * @param {Star} stars The array to fill with star objects.
+ * @param {star[]} stars The array to fill with star objects.
  */
 function generateStars(stars)
 {
@@ -66,7 +72,8 @@ function generateStars(stars)
 }
 
 /**
- * Generate a list of asteroids to be spawned into the game.
+ * Generate a list of asteroids to be spawned into the game and add them to the global
+ * `asteroids` array. Asteroid count is determined on the current game wave.
  */
 function generateAsteroids()
 {
@@ -99,7 +106,8 @@ function gameLoop()
 }
 
 /**
- * Reset the game's elements on a game restart.
+ * Reset the game's elements on a game restart. These include life count, score,
+ * the global entity arrays, wave count, and ship position and heading.
  */
 function restartGame()
 {
@@ -122,7 +130,8 @@ function restartGame()
 }
 
 /**
- * Add a bullet to the current stream if the player fires.
+ * Add a bullet to the current stream if the player fires. If the bullet stream limit
+ * has been reached, do nothing. 
  */
 function fireCheck()
 {
@@ -138,8 +147,25 @@ function fireCheck()
 }
 
 /**
+ * Spawn a spark of explosion debris at the given location to the global `debris`
+ * array.
+ * 
+ * @param {number} x The X coordinate of the spark. 
+ * @param {number} y The Y coordinate of the spark.
+ * @param {number} count The amount of debris to add to the array.
+ */
+function spawnDebris(x, y, count)
+{
+  for (let i = 0; i < count; i++)
+  {
+    debris.push(new Debris(x, y, Math.random() * (Math.PI * 2)));
+  }
+}
+
+/**
  * Iterate through the game's current particles and asteroids and detect if a bullet
- * has collided with an asteroid, and remove them from the game if true.
+ * has collided with an asteroid, and remove them from the game & spawn debris 
+ * if true.
  */
 function particleCollision()
 {
@@ -159,21 +185,17 @@ function particleCollision()
         particle.dead = true;
         asteroid.dead = true;
 
-        for (let i = 0; i < DEBRIS_COUNT; i++)
-        {
-          debris.push(
-            new Debris(
-              asteroid.position.x, 
-              asteroid.position.y, 
-              Math.random() * (Math.PI * 2)
-            )
-          );
-        }
+        spawnDebris(asteroid.position.x, asteroid.position.y, DEBRIS_COUNT);
       }
     }
   }
 }
 
+/**
+ * Iterate through the game's current asteroids and detect if one has collided with 
+ * the player's ship. Reset the ship, spawn debris, and decrement the life count 
+ * if true.
+ */
 function shipCollision()
 {
   for (let asteroid of asteroids)
@@ -187,16 +209,7 @@ function shipCollision()
       ship.position = new Vector2(MID_WIDTH, MID_HEIGHT);
       lives -= 1;
       
-      for (let i = 0; i < 10; i++)
-      {
-        debris.push(
-          new Debris(
-            asteroid.position.x, 
-            asteroid.position.y, 
-            Math.random() * (Math.PI * 2),
-          )
-        );
-      }
+      spawnDebris(asteroid.position.x, asteroid.position.y, DEBRIS_COUNT);
     }
   }
 }
@@ -207,9 +220,11 @@ function shipCollision()
 function filterEntities()
 {
   asteroids = asteroids.filter(a => !a.dead);
-  particles = particles.filter(p => !p.dead);
-  particles = particles.filter(p => !isOffScreen(canvas.width, canvas.height));
-  debris = debris.filter(d => !isOffScreen(canvas.width, canvas.height));
+  particles = particles.filter(p => (
+    !p.dead && 
+    !isOffScreen(p.position.x, p.position.y)
+  ));
+  debris = debris.filter(d => !isOffScreen(d.position.x, d.position.y));
 }
 
 /**
@@ -315,12 +330,7 @@ function draw()
 
   if (gameStatus === 'MENU')
   {
-    const isMobile = (
-      window.matchMedia('(pointer: coarse)').matches || 
-      navigator.maxTouchPoints > 0
-    );
-
-    const prompt = isMobile ? 'Tap to Start' : 'Press ENTER to Start';
+    const prompt = isMobile ? 'TAP to Start' : 'Press ENTER to Start';
 
     ctx.font = '17px consolas';
     ctx.fillStyle = '#00FF00';
@@ -331,12 +341,7 @@ function draw()
   }
   else if (gameStatus === 'GAMEOVER')
   {
-    const isMobile = (
-      window.matchMedia('(pointer: coarse)').matches || 
-      navigator.maxTouchPoints > 0
-    );
-
-    const prompt = isMobile ? 'Tap to Restart' : 'Press ENTER to Restart';
+    const prompt = isMobile ? 'TAP to Restart' : 'Press ENTER to Restart';
 
     ctx.fillStyle = '#00FF00';
     ctx.textAlign = 'center';
