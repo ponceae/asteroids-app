@@ -331,10 +331,17 @@ function draw()
   }
   else if (gameStatus === 'GAMEOVER')
   {
+    const isMobile = (
+      window.matchMedia('(pointer: coarse)').matches || 
+      navigator.maxTouchPoints > 0
+    );
+
+    const prompt = isMobile ? 'Tap to Restart' : 'Press ENTER to Restart';
+
     ctx.fillStyle = '#00FF00';
     ctx.textAlign = 'center';
     ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2);
-    ctx.fillText('Press ENTER to Restart', canvas.width / 2, canvas.height / 2 + 30);
+    ctx.fillText(prompt, canvas.width / 2, canvas.height / 2 + 30);
   }
   else
   {
